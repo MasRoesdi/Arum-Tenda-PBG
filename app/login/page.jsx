@@ -137,7 +137,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="subpage">
+    <div className="subpage login-page">
       <SubpageHeader activePage="/login" />
       <main className="subpage-main" style={{ maxWidth: '440px', padding: '140px 20px 120px' }}>
         <p className="eyebrow">PORTAL CMS ARUM TENDA</p>

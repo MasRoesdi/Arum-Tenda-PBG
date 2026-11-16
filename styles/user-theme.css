@@ -24,6 +24,11 @@
   background: #1748e8;
 }
 
+.login-page > .site-header,
+.login-page > .mobile-nav {
+  display: none;
+}
+
 .subpage-main .eyebrow {
   color: #f28a3a;
 }
