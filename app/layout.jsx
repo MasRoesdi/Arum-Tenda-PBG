@@ -1,6 +1,7 @@
 import './globals.css';
 import '../styles/style.css';
 import '../styles/features.css';
+import '../styles/user-theme.css';
 import SatinBackground from './components/satin-background';
 import { LocalBusinessJsonLd, FaqJsonLd } from './components/json-ld';
 

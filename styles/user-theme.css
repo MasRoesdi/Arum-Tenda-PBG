@@ -1,0 +1,48 @@
+/* Public storefront palette: clear blue with warm orange accents. */
+:root {
+  --green: #1748e8;
+  --green-2: #1239bd;
+  --gold: #f28a3a;
+}
+
+.hero {
+  background-color: #263a70;
+}
+
+.hero-overlay {
+  background:
+    linear-gradient(90deg, rgba(13, 27, 67, .66), rgba(13, 27, 67, .09) 75%),
+    linear-gradient(0deg, rgba(13, 27, 67, .42), transparent 24%);
+}
+
+.site-header.is-scrolled {
+  background: rgba(23, 72, 232, .95);
+}
+
+.subpage .site-header,
+.subpage .site-header.is-scrolled {
+  background: #1748e8;
+}
+
+.subpage-main .eyebrow {
+  color: #f28a3a;
+}
+
+.subpage-main input:focus-visible {
+  border-color: #1748e8 !important;
+  outline: 2px solid #1748e833;
+}
+
+.subpage-main a:hover {
+  color: #f28a3a !important;
+}
+
+.subpage .button-dark,
+.subpage .button-dark:hover {
+  background: #1748e8;
+}
+
+.scene-switcher .scene-button.active,
+.detail-scene-switcher .detail-scene.active {
+  background: var(--green);
+}

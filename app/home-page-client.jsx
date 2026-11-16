@@ -83,7 +83,6 @@ export default function HomePageClient() {
     <>
       <header className="site-header">
         <Link className="brand" href="/" aria-label="Arum Tenda, beranda">
-          <span className="brand-icon">A</span>
           <span>ARUM TENDA<small>SEWA TENDA &amp; PERLENGKAPAN</small></span>
         </Link>
         <nav className="main-nav" aria-label="Navigasi utama">
@@ -281,8 +280,8 @@ export default function HomePageClient() {
                 <span className="simulator-swatches-label">Pilihan Palet:</span>
                 <div className="simulator-swatch-dots">
                   <span className="mini-swatch" style={{ background: '#f5f0e6' }} title="Broken White / Ivory" />
-                  <span className="mini-swatch" style={{ background: '#233729' }} title="Forest Green" />
-                  <span className="mini-swatch" style={{ background: '#c89650' }} title="Warm Gold" />
+                  <span className="mini-swatch" style={{ background: '#1748e8' }} title="Arum Blue" />
+                  <span className="mini-swatch" style={{ background: '#f28a3a' }} title="Warm Orange" />
                   <span className="mini-swatch" style={{ background: '#b85b4b' }} title="Terracotta" />
                   <span className="mini-swatch" style={{ background: '#222f3e' }} title="Midnight Navy" />
                 </div>
@@ -330,7 +329,6 @@ export default function HomePageClient() {
       <footer className="site-footer">
         <div className="footer-main">
           <Link className="brand footer-brand" href="/">
-            <span className="brand-icon">A</span>
             <span>ARUM TENDA<small>SEWA TENDA &amp; PERLENGKAPAN</small></span>
           </Link>
           <p className="footer-tagline">
