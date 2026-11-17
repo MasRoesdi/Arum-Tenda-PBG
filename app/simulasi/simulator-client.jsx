@@ -1,51 +1,365 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import SubpageHeader from '../components/subpage-header';
 import SubpageFooter from '../components/subpage-footer';
+import TentCanvasPreview from '@/components/simulator/TentCanvasPreview';
+import { TENT_TEMPLATES, COLOR_PRESETS } from '@/config/tentTemplates';
+import { Sun, Moon, Palette, Layers, Check, ArrowUpRight } from 'lucide-react';
 
-const typeOptions = [
-  { id: 'transparan', label: 'Transparan', description: 'Tampilan terbuka dan ringan', icon: 'type-transparent' },
-  { id: 'kerut', label: 'Kerut', description: 'Kanopi dengan detail lipit', icon: 'type-kerut' },
-  { id: 'blukat', label: 'Blukat', description: 'Bentuk lengkung yang teduh', icon: 'type-blukat' },
-  { id: 'piramid', label: 'Pyramid', description: 'Atap tinggi dengan empat sisi', icon: 'type-piramid' },
-];
-
-const typeLabels = { transparan: 'TRANSPARAN', kerut: 'KERUT', blukat: 'BLUKAT', piramid: 'PYRAMID' };
 export default function SimulatorClient() {
-  const [tentType, setTentType] = useState('piramid');
-  const [primaryColor, setPrimaryColor] = useState('#ece7da');
-  const [secondaryColor, setSecondaryColor] = useState('#f05a3a');
+  const [selectedTentId, setSelectedTentId] = useState('kerut');
+  const [lightingMode, setLightingMode] = useState('day');
+  const [activePresetId, setActivePresetId] = useState(null);
 
-  return <div className="subpage">
-    <SubpageHeader activePage="/simulasi" />
-    <main className="tent-simulator-page">
-      <section className="tent-type-section">
-        <div className="simulator-heading"><p className="eyebrow">RANCANG SESUAI KEBUTUHAN ACARA</p><h1>Pilih Tipe Tenda</h1><p>Pilih bentuk tenda untuk melihat pratinjau. Tipe Pyramid terpilih secara otomatis.</p></div>
-        <div className="tent-type-grid" role="group" aria-label="Pilih tipe tenda">
-          {typeOptions.map((type) => <button className={`tent-type-option${tentType === type.id ? ' is-selected' : ''}`} type="button" data-tent-type={type.id} aria-pressed={tentType === type.id} key={type.id} onClick={() => setTentType(type.id)}><span className={`tent-type-icon ${type.icon}`}><i /></span><b>{type.label}</b><small>{type.description}</small></button>)}
-        </div>
-      </section>
+  // Current active tent template config
+  const currentTemplate = useMemo(() => {
+    return TENT_TEMPLATES.find((t) => t.id === selectedTentId) || TENT_TEMPLATES[0];
+  }, [selectedTentId]);
 
-      <section className="tent-color-section">
-        <div className="tent-preview-column">
-          <div className="tent-preview-heading"><div><p className="eyebrow">PRATINJAU</p><h2>Tenda pilihan Anda</h2></div><span className="preview-type-badge">{typeLabels[tentType]}</span></div>
-          <div className="tent-preview-scene" data-tent-type={tentType} style={{ '--fabric-primary': primaryColor, '--fabric-secondary': secondaryColor }}>
-            <img className="tent-preview-photo" src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1500&q=85" alt="Suasana acara untuk melihat ilustrasi tenda" loading="lazy" />
-            <div className="tent-preview-shade" /><div className="sim-tent"><div className="sim-tent-roof" /><div className="sim-tent-valance" /><div className="sim-tent-frame"><i /><i /><i /></div><div className="sim-tent-wall" /></div>
-            <p className="preview-caption">ILUSTRASI BENTUK &amp; WARNA</p>
-          </div>
-          <p className="simulator-disclaimer">Pratinjau ini adalah ilustrasi untuk membantu memilih warna dan tipe tenda. Bentuk, bahan, dan detail pemasangan dapat berbeda di lokasi.</p>
+  // Helper to extract default layer states from template
+  const getInitialLayerStates = useCallback((template) => {
+    const states = {};
+    for (const layer of template.layers) {
+      states[layer.id] = {
+        color: layer.defaultColor,
+        intensity: layer.defaultIntensity,
+        enabled: layer.defaultEnabled,
+      };
+    }
+    return states;
+  }, []);
+
+  // Layer state storage per tent type
+  const [layerStates, setLayerStates] = useState(() =>
+    getInitialLayerStates(currentTemplate)
+  );
+
+  // Switch tent type and reset layer state to that template's defaults
+  const handleTentTypeChange = (tentId) => {
+    setSelectedTentId(tentId);
+    setActivePresetId(null);
+    const targetTemplate = TENT_TEMPLATES.find((t) => t.id === tentId) || TENT_TEMPLATES[0];
+    setLayerStates(getInitialLayerStates(targetTemplate));
+  };
+
+  // Apply Quick 2-Color Preset
+  const handleApplyPreset = (presetId) => {
+    const preset = COLOR_PRESETS.find((p) => p.id === presetId);
+    if (!preset) return;
+
+    setActivePresetId(presetId);
+    setLayerStates((prev) => {
+      const next = { ...prev };
+      for (const layer of currentTemplate.layers) {
+        if (!next[layer.id]) continue;
+        if (layer.role === 'primary') {
+          next[layer.id] = { ...next[layer.id], color: preset.primary, enabled: true };
+        } else if (layer.role === 'secondary') {
+          next[layer.id] = { ...next[layer.id], color: preset.secondary, enabled: true };
+        } else if (layer.role === 'tertiary' || layer.role === 'accent') {
+          next[layer.id] = {
+            ...next[layer.id],
+            color: preset.tertiary || preset.primary,
+            enabled: true,
+          };
+        }
+      }
+      return next;
+    });
+  };
+
+  // Custom layer color picker change
+  const handleColorChange = (layerId, color) => {
+    setActivePresetId(null);
+    setLayerStates((prev) => ({
+      ...prev,
+      [layerId]: {
+        ...prev[layerId],
+        color,
+        enabled: true,
+      },
+    }));
+  };
+
+  // Custom layer intensity slider change
+  const handleIntensityChange = (layerId, intensity) => {
+    setLayerStates((prev) => ({
+      ...prev,
+      [layerId]: {
+        ...prev[layerId],
+        intensity,
+      },
+    }));
+  };
+
+  // Toggle layer active / inactive
+  const handleToggleLayer = (layerId) => {
+    setLayerStates((prev) => ({
+      ...prev,
+      [layerId]: {
+        ...prev[layerId],
+        enabled: !prev[layerId]?.enabled,
+      },
+    }));
+  };
+
+  // Reset to original template defaults
+  const handleResetColors = () => {
+    setActivePresetId(null);
+    setLayerStates(getInitialLayerStates(currentTemplate));
+  };
+
+  // Prepare consultation query summary
+  const consultationSummary = useMemo(() => {
+    const layerSummary = currentTemplate.layers
+      .filter((l) => layerStates[l.id]?.enabled)
+      .map((l) => `${l.name} (${layerStates[l.id]?.color})`)
+      .join(', ');
+    return `Halo Arum Tenda, saya telah merancang simulasi tenda tipe ${currentTemplate.name} dengan kombinasi: ${layerSummary}, mode pencahayaan ${lightingMode === 'day' ? 'Siang' : 'Malam'}. Mohon informasi survei lokasi & konsultasi.`;
+  }, [currentTemplate, layerStates, lightingMode]);
+
+  return (
+    <div className="subpage">
+      <SubpageHeader activePage="/simulasi" />
+
+      <main className="tent-simulator-page">
+        {/* Page Title & Heading */}
+        <div className="simulator-heading">
+          <p className="eyebrow">INTERACTIVE PHOTO VISUALIZER</p>
+          <h1>Simulasi Tenda &amp; Warna</h1>
+          <p>
+            Rancang kombinasi warna kain serut dengan visualisasi realistik berbasis lipatan kain
+            asli dan tata pencahayaan Siang &amp; Malam.
+          </p>
         </div>
 
-        <div className="tent-color-controls"><p className="eyebrow">SESUAIKAN TAMPILAN</p><h2>Atur Warna</h2><p className="color-controls-intro">Pilih warna utama dan aksen untuk melihat kombinasi pada pratinjau tenda.</p>
-          <label className="color-picker-row" htmlFor="tent-primary-color"><span><b>Warna Utama</b><small>Kanopi utama</small></span><span className="color-input-wrap"><input id="tent-primary-color" type="color" value={primaryColor} aria-label="Pilih warna utama" onChange={(event) => setPrimaryColor(event.target.value)} /><output>{primaryColor.toUpperCase()}</output></span></label>
-          <label className="color-picker-row" htmlFor="tent-secondary-color"><span><b>Warna Kedua</b><small>Aksen dan lis</small></span><span className="color-input-wrap"><input id="tent-secondary-color" type="color" value={secondaryColor} aria-label="Pilih warna kedua" onChange={(event) => setSecondaryColor(event.target.value)} /><output>{secondaryColor.toUpperCase()}</output></span></label>
-          <Link className="button button-dark simulator-contact-link" href="/kontak">Tanyakan pilihan ini <span>↗</span></Link>
+        {/* Main 2-Column Responsive Layout */}
+        <div className="simulator-main-layout">
+          {/* Left Column: Interactive Canvas Visualizer (Sticky on Desktop) */}
+          <section className="simulator-preview-col" aria-label="Kanvas Pratinjau Tenda">
+            <TentCanvasPreview
+              template={currentTemplate}
+              layerStates={layerStates}
+              lightingMode={lightingMode}
+              onReset={handleResetColors}
+            />
+          </section>
+
+          {/* Right Column: Interactive Configuration Panels */}
+          <section className="simulator-controls-col" aria-label="Panel Konfigurasi Tenda">
+            {/* 1. Model / Tipe Tenda Selector */}
+            <div className="sim-control-card">
+              <div className="sim-card-header">
+                <div>
+                  <h2 className="sim-card-title">1. Pilih Tipe Tenda</h2>
+                  <p className="sim-card-subtitle">Pilih model kerangka dan pola plafon kain</p>
+                </div>
+              </div>
+
+              <div className="sim-type-selector-grid" role="group" aria-label="Pilih model tenda">
+                {TENT_TEMPLATES.map((tpl) => {
+                  const isSelected = selectedTentId === tpl.id;
+                  return (
+                    <button
+                      key={tpl.id}
+                      type="button"
+                      className={`sim-type-card-btn ${isSelected ? 'is-active' : ''}`}
+                      onClick={() => handleTentTypeChange(tpl.id)}
+                      aria-pressed={isSelected}
+                    >
+                      <span className="sim-type-name">{tpl.name}</span>
+                      <span className="sim-type-desc">{tpl.description}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* 2. Suasana Pencahayaan (Siang & Malam) */}
+            <div className="sim-control-card">
+              <div className="sim-card-header">
+                <div>
+                  <h2 className="sim-card-title">2. Suasana Pencahayaan</h2>
+                  <p className="sim-card-subtitle">
+                    Pratinjau visual di siang hari atau malam bertabur lampu kristal
+                  </p>
+                </div>
+              </div>
+
+              <div className="sim-lighting-toggle-group" role="group" aria-label="Mode pencahayaan">
+                <button
+                  type="button"
+                  className={`sim-lighting-btn ${lightingMode === 'day' ? 'is-active' : ''}`}
+                  onClick={() => setLightingMode('day')}
+                  aria-pressed={lightingMode === 'day'}
+                >
+                  <Sun size={16} />
+                  <span>Siang (Daylight)</span>
+                </button>
+                <button
+                  type="button"
+                  className={`sim-lighting-btn ${lightingMode === 'night' ? 'is-active' : ''}`}
+                  onClick={() => setLightingMode('night')}
+                  aria-pressed={lightingMode === 'night'}
+                >
+                  <Moon size={16} />
+                  <span>Malam (Warm Glow)</span>
+                </button>
+              </div>
+            </div>
+
+            {/* 3. Preset Kombinasi 2-Warna Siap Pakai */}
+            <div className="sim-control-card">
+              <div className="sim-card-header">
+                <div>
+                  <h2 className="sim-card-title">3. Kombinasi Warna Siap Pakai</h2>
+                  <p className="sim-card-subtitle">
+                    Preset 2-warna rekomendasi wedding &amp; hajatan Arum Tenda
+                  </p>
+                </div>
+                <Palette size={18} className="text-gray-400" />
+              </div>
+
+              <div className="sim-presets-grid" role="group" aria-label="Preset warna siap pakai">
+                {COLOR_PRESETS.map((preset) => {
+                  const isActive = activePresetId === preset.id;
+                  return (
+                    <button
+                      key={preset.id}
+                      type="button"
+                      className={`sim-preset-btn ${isActive ? 'is-active' : ''}`}
+                      onClick={() => handleApplyPreset(preset.id)}
+                      aria-pressed={isActive}
+                      title={`Terapkan ${preset.name}`}
+                    >
+                      <div className="sim-preset-swatches">
+                        <span
+                          className="sim-preset-dot"
+                          style={{ backgroundColor: preset.primary }}
+                        />
+                        <span
+                          className="sim-preset-dot"
+                          style={{ backgroundColor: preset.secondary }}
+                        />
+                      </div>
+                      <span className="sim-preset-label">{preset.name}</span>
+                      {isActive && <Check size={14} className="ml-auto text-blue-600" />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* 4. Kustomisasi Komponen Layer Per Komponen */}
+            <div className="sim-control-card">
+              <div className="sim-card-header">
+                <div>
+                  <h2 className="sim-card-title">4. Kustomisasi Detail Layer</h2>
+                  <p className="sim-card-subtitle">
+                    Atur warna custom dan kepekatan intensitas tiap bagian kain
+                  </p>
+                </div>
+                <Layers size={18} className="text-gray-400" />
+              </div>
+
+              <div className="sim-layers-list">
+                {currentTemplate.layers.map((layer) => {
+                  const state = layerStates[layer.id] || {
+                    color: layer.defaultColor,
+                    intensity: layer.defaultIntensity,
+                    enabled: layer.defaultEnabled,
+                  };
+
+                  return (
+                    <div
+                      key={layer.id}
+                      className={`sim-layer-item ${!state.enabled ? 'is-disabled' : ''}`}
+                    >
+                      <div className="sim-layer-top">
+                        <div className="sim-layer-info">
+                          <span className="sim-layer-name">{layer.name}</span>
+                          <span className={`sim-role-badge ${layer.role}`}>
+                            {layer.role === 'primary'
+                              ? 'Primer'
+                              : layer.role === 'secondary'
+                              ? 'Sekunder'
+                              : 'Aksen/Tirai'}
+                          </span>
+                        </div>
+                        <label className="flex items-center gap-2 cursor-pointer text-xs text-gray-500">
+                          <input
+                            type="checkbox"
+                            checked={state.enabled}
+                            onChange={() => handleToggleLayer(layer.id)}
+                            className="rounded cursor-pointer"
+                          />
+                          <span>{state.enabled ? 'Aktif' : 'Off'}</span>
+                        </label>
+                      </div>
+
+                      {state.enabled && (
+                        <div className="sim-layer-controls">
+                          {/* Color picker & Hex */}
+                          <div className="sim-color-picker-wrap">
+                            <input
+                              type="color"
+                              value={state.color}
+                              onChange={(e) => handleColorChange(layer.id, e.target.value)}
+                              className="sim-color-input"
+                              aria-label={`Pilih warna untuk ${layer.name}`}
+                            />
+                            <span className="sim-color-hex">{state.color.toUpperCase()}</span>
+                          </div>
+
+                          {/* Intensity slider */}
+                          <div className="sim-slider-wrap">
+                            <div className="sim-slider-label">
+                              <span>Kepekatan Warna</span>
+                              <b>{state.intensity}%</b>
+                            </div>
+                            <input
+                              type="range"
+                              min="10"
+                              max="100"
+                              step="5"
+                              value={state.intensity}
+                              onChange={(e) =>
+                                handleIntensityChange(layer.id, parseInt(e.target.value, 10))
+                              }
+                              className="sim-slider"
+                              aria-label={`Kepekatan ${layer.name}`}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* 5. Konsultasi & Pemesanan */}
+            <div className="sim-cta-card">
+              <h3 className="sim-cta-title">Suka dengan Kombinasi Ini?</h3>
+              <p className="sim-cta-desc">
+                Konsultasikan hasil simulasi Anda langsung dengan tim perancang Arum Tenda untuk
+                menyesuaikan ukuran venue dan jadwal acara Anda.
+              </p>
+              <Link
+                className="sim-cta-button"
+                href={`/kontak?pesan=${encodeURIComponent(consultationSummary)}`}
+              >
+                <span>Konsultasikan Pilihan Ini</span>
+                <ArrowUpRight size={18} />
+              </Link>
+            </div>
+          </section>
         </div>
-      </section>
-    </main>
-    <SubpageFooter activePage="/simulasi" />
-  </div>;
+      </main>
+
+      <SubpageFooter activePage="/simulasi" />
+    </div>
+  );
 }

@@ -43,7 +43,7 @@ export const TENT_TEMPLATES: TentTemplateConfig[] = [
         id: 'blukat',
         name: 'Tenda Blukat',
         description: 'Plafon datar dengan aksen kain selempang melengkung dan tirai keliling.',
-        imageUrl: '/images/tents/blukat.jpg',
+        imageUrl: '/images/tents/blukat.png',
         layers: [
             {
                 id: 'blukat_plafon',
@@ -96,9 +96,9 @@ export const TENT_TEMPLATES: TentTemplateConfig[] = [
     },
     {
         id: 'kerut',
-        name: 'Tenda Kerut',
+        name: 'Tenda Kerut / Serut VIP',
         description: 'Plafon kerut memusat ke lampu gantung dengan kombinasi warna kontras dan tirai tinggi.',
-        imageUrl: '/images/tents/kerut.jpg',
+        imageUrl: '/images/tents/kerut.png',
         layers: [
             {
                 id: 'kerut_plafon_utama',
@@ -152,7 +152,7 @@ export const TENT_TEMPLATES: TentTemplateConfig[] = [
         id: 'piramid',
         name: 'Tenda Piramid',
         description: 'Plafon tinggi bertekstur dengan lis gantung simetris dan tirai lorong memanjang.',
-        imageUrl: '/images/tents/piramid.jpg',
+        imageUrl: '/images/tents/piramid.png',
         layers: [
             {
                 id: 'piramid_plafon',

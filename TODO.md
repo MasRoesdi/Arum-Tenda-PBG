@@ -2,14 +2,6 @@
 
 Diperiksa terhadap proposal IUM revisi (*Peningkatan Jangkauan Pasar Arum Tenda Purbalingga*), bagian solusi tiga pilar dan tahap Design/Develop. Yang sudah ada di sistem tidak dicantumkan di sini.
 
-## Simulasi Tenda (`/simulasi`) - IMPORTANCE : HIGH
-
-Mengganti blok CSS pratinjau menjadi **Interactive Multi-Layer Tent Photo Visualizer** berbasis HTML5 Canvas (HSL Luminance Preservation) dengan preconfigured layer komponen tenda.
-
-- [ ] **Multi-Layer Canvas Visualizer:** Ganti pratinjau blok CSS dengan engine HTML5 Canvas menggunakan koordinat poligon relatif terkonfigurasi (`config/tentTemplates.ts`) untuk tiap komponen tenda (Plafon Serut, Rumbai/Pilar, Tirai Dinding, Sarung Kursi) sesuai tipe tenda yang dipilih (Kerut/Serut VIP, Transparan, Blukat, Piramid).
-- [ ] **Pewarnaan Realistik (HSL Luminance) & Kombinasi Warna Siap Pakai:** Implementasikan perubahan warna berbasis Hue yang mempertahankan lipatan & bayangan kain asli, lengkap dengan *preset* kombinasi 2 warna siap pakai: **Maroon-Gold**, **Mocca-Cream**, **Navy-Silver**, **Rose-Gold**, **Emerald-Gold**, serta *custom color picker* per komponen.
-- [ ] **Mode Pencahayaan Siang & Malam (Lampu Kristal & Fairy Lights):** Tambahkan toggle suasana **Siang** (cahaya natural cerah) dan **Malam** (atmosfer redup dengan efek pendar cahaya hangat pada lampu kristal gantung & *fairy lights*).
-
 ## Reservasi WhatsApp - IMPORTANCE : LOW
 
 Kontak, katalog, dan beranda hanya membuka `wa.me` dengan nomor contoh `6281234567890` dan teks umum. Detail produk merangkum nama barang, spesifikasi, warna, jumlah, dan estimasi, tetapi bukan data survei.

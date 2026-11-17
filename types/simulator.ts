@@ -1,6 +1,6 @@
 export type TentTypeId = 'kerut' | 'transparan' | 'blukat' | 'piramid';
 
-export type LayerRole = 'primary' | 'secondary' | 'tertiary';
+export type LayerRole = 'primary' | 'secondary' | 'tertiary' | 'accent';
 
 export interface LayerPolygonConfig {
     id: string;
@@ -35,5 +35,13 @@ export interface ColorPreset {
     name: string;
     primary: string;
     secondary: string;
-    tertiary: string;
+    tertiary?: string;
 }
+
+export interface LayerState {
+    color: string;
+    intensity: number;
+    enabled: boolean;
+}
+
+export type LightingMode = 'day' | 'night';

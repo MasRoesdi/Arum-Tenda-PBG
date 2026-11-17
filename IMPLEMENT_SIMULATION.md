@@ -8,7 +8,7 @@ Ubah implementasi simulator di rute `/simulasi` (yang sebelumnya hanya menumpuk 
 
 ### A. Multi-Layer Photo Canvas Engine (Tanpa AI & Tanpa Backend)
 - **Tipe Tenda:** Dukung pemilihan model tenda (**Kerut / Serut VIP**, **Transparan**, **Blukat**, **Piramid**). Setiap tipe tenda merujuk pada foto dasar resolusi tinggi dan konfigurasi layer poligonnya masing-masing.
-- **Preconfigured Layers:** Buat file konfigurasi statis `src/config/tentTemplates.ts` yang memetakan area komponen tenda menggunakan **koordinat poligon relatif (`0.0` - `1.0`)** dan nilai `feather` (blur tepi dalam `px`), seperti:
+- **Preconfigured Layers:** File konfigurasi statis `src/config/tentTemplates.ts` yang memetakan area komponen tenda menggunakan **koordinat poligon relatif (`0.0` - `1.0`)** dan nilai `feather` (blur tepi dalam `px`), seperti:
   1. `plafon` (Kain Plafon Serut / Utama — *Warna Primer*)
   2. `aksen_rumbai` (Layer Rumbai Kedua / Balutan Pilar — *Warna Sekunder*)
   3. `tirai_dinding` (Tirai Dinding Samping & Belakang)
