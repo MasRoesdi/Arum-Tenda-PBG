@@ -48,6 +48,8 @@ export interface GalleryItemRecord {
   tent_type: string;
   image_url: string;
   instagram_url: string | null;
+  media_type?: string | null;
+  video_url?: string | null;
   is_featured: boolean;
   created_at: string;
 }

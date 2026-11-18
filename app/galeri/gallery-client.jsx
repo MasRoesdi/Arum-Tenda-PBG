@@ -3,6 +3,7 @@
 import { memo, useEffect, useRef, useState, useMemo } from 'react';
 import { gsap } from 'gsap';
 import { Flip } from 'gsap/Flip';
+import { Play } from 'lucide-react';
 import SubpageHeader from '../components/subpage-header';
 import SubpageFooter from '../components/subpage-footer';
 
@@ -51,6 +52,8 @@ const defaultGalleryItems = [
   title,
   type,
   image: `https://images.unsplash.com/${photo}?auto=format&fit=crop&w=1100&q=84`,
+  mediaType: 'IMAGE',
+  videoUrl: null,
   postUrl: instagramUrl,
   index,
   id: `fallback-${index}`,
@@ -60,19 +63,25 @@ const InteractiveGallery = memo(function InteractiveGallery({ galleryItems }) {
   const gridRef = useRef(null);
   const modalRef = useRef(null);
   const modalMediaRef = useRef(null);
+  const videoContainerRef = useRef(null);
   const overlayRef = useRef(null);
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
   const instagramLinkRef = useRef(null);
+  const typeBadgeRef = useRef(null);
+  const mediaBadgeRef = useRef(null);
 
   useEffect(() => {
     const grid = gridRef.current;
     const modal = modalRef.current;
     const modalMedia = modalMediaRef.current;
+    const videoContainer = videoContainerRef.current;
     const overlay = overlayRef.current;
     const title = titleRef.current;
     const description = descriptionRef.current;
     const instagramLink = instagramLinkRef.current;
+    const typeBadge = typeBadgeRef.current;
+    const mediaBadge = mediaBadgeRef.current;
     if (!grid || !modal || !modalMedia || !overlay) return undefined;
 
     const boxes = [...grid.querySelectorAll('.gallery-box')];
@@ -83,6 +92,18 @@ const InteractiveGallery = memo(function InteractiveGallery({ galleryItems }) {
 
     function closeGalleryModal() {
       if (activeIndex === undefined || !activeImage) return;
+
+      if (videoContainer) {
+        const currentVideo = videoContainer.querySelector('video');
+        if (currentVideo) {
+          currentVideo.pause();
+          currentVideo.removeAttribute('src');
+          currentVideo.load();
+        }
+        videoContainer.innerHTML = '';
+        videoContainer.style.display = 'none';
+      }
+
       const index = activeIndex;
       const image = activeImage;
       const state = Flip.getState(image);
@@ -121,6 +142,39 @@ const InteractiveGallery = memo(function InteractiveGallery({ galleryItems }) {
         description.textContent = getGalleryDescription(item);
         instagramLink.href = item.postUrl || instagramUrl;
         modal.setAttribute('aria-label', `Pratinjau ${item.title}`);
+
+        if (typeBadge) {
+          typeBadge.textContent = `Tenda ${item.type || 'Pilihan'}`;
+        }
+        if (mediaBadge) {
+          if (item.mediaType === 'VIDEO') {
+            mediaBadge.textContent = '🎥 Video Reels';
+            mediaBadge.className = 'gallery-modal-media-badge badge-video';
+          } else {
+            mediaBadge.textContent = '📷 Foto';
+            mediaBadge.className = 'gallery-modal-media-badge';
+          }
+        }
+
+        if (item.mediaType === 'VIDEO' && item.videoUrl && videoContainer) {
+          videoContainer.innerHTML = '';
+          const video = document.createElement('video');
+          video.className = 'gallery-modal-video';
+          video.src = item.videoUrl;
+          video.poster = item.image;
+          video.controls = true;
+          video.playsInline = true;
+          video.preload = 'metadata';
+          video.autoplay = true;
+          video.setAttribute('playsinline', '');
+          video.setAttribute('webkit-playsinline', '');
+          videoContainer.appendChild(video);
+          videoContainer.style.display = 'flex';
+          video.play().catch(() => {});
+        } else if (videoContainer) {
+          videoContainer.innerHTML = '';
+          videoContainer.style.display = 'none';
+        }
       }
       modal.setAttribute('aria-hidden', 'false');
       modal.classList.add('is-open');
@@ -151,6 +205,13 @@ const InteractiveGallery = memo(function InteractiveGallery({ galleryItems }) {
     document.addEventListener('keydown', onEscape);
 
     return () => {
+      if (videoContainer) {
+        const currentVideo = videoContainer.querySelector('video');
+        if (currentVideo) {
+          currentVideo.pause();
+        }
+        videoContainer.innerHTML = '';
+      }
       if (activeIndex !== undefined && activeImage && boxes[activeIndex]) {
         boxes[activeIndex].appendChild(activeImage);
       }
@@ -171,8 +232,18 @@ const InteractiveGallery = memo(function InteractiveGallery({ galleryItems }) {
       <div className="event-gallery-grid boxes-container" id="event-gallery-grid" ref={gridRef} aria-live="polite">
         {galleryItems.map((item, index) => (
           <div className="gallery-box" data-gallery-type={(item.type || 'transparan').toLowerCase()} key={item.id || item.index || index}>
-            <button className="gallery-box-content" type="button" aria-label={`Lihat foto: ${item.title}`}>
+            <button
+              className="gallery-box-content"
+              type="button"
+              aria-label={`Lihat ${item.mediaType === 'VIDEO' ? 'video reels' : 'foto'}: ${item.title}`}
+            >
               <img src={item.image} alt={item.title} loading="lazy" />
+              {item.mediaType === 'VIDEO' && (
+                <div className="gallery-video-badge" aria-label="Instagram Reels Video">
+                  <Play size={12} fill="currentColor" strokeWidth={0} />
+                  <span>Reels</span>
+                </div>
+              )}
               <span>{item.title}</span>
             </button>
           </div>
@@ -181,9 +252,14 @@ const InteractiveGallery = memo(function InteractiveGallery({ galleryItems }) {
       <div className="gallery-modal" ref={modalRef} aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="gallery-modal-title">
         <button className="gallery-modal-overlay" type="button" aria-label="Tutup foto" ref={overlayRef} />
         <section className="gallery-modal-layout">
-          <div className="gallery-modal-media" ref={modalMediaRef} />
+          <div className="gallery-modal-media" ref={modalMediaRef}>
+            <div className="gallery-modal-video-container" ref={videoContainerRef} style={{ display: 'none' }} />
+          </div>
           <div className="gallery-modal-caption">
-            <p className="eyebrow">GALERI TENDA</p>
+            <div className="gallery-modal-tags">
+              <span className="gallery-modal-type-badge" ref={typeBadgeRef}>Tenda</span>
+              <span className="gallery-modal-media-badge" ref={mediaBadgeRef}>Foto</span>
+            </div>
             <h2 id="gallery-modal-title" ref={titleRef} />
             <p className="gallery-modal-description" ref={descriptionRef} />
             <a className="button button-dark gallery-instagram-link" href={instagramUrl} target="_blank" rel="noreferrer" ref={instagramLinkRef}>
@@ -208,6 +284,8 @@ export default function GalleryClient({ initialItems }) {
           title: item.title,
           type: item.tent_type,
           image: item.image_url,
+          mediaType: item.media_type || 'IMAGE',
+          videoUrl: item.video_url || null,
           postUrl: item.instagram_url || instagramUrl,
           createdAt: item.created_at,
           index,

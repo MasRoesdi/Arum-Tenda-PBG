@@ -20,7 +20,7 @@ export async function createGalleryItemAction(data: GalleryFormInput): Promise<A
       };
     }
 
-    const { title, tent_type, image_url, instagram_url, is_featured } = validated.data;
+    const { title, tent_type, image_url, instagram_url, media_type, video_url, is_featured } = validated.data;
     const { supabase } = await requireAdmin();
 
     const { data: item, error: insertError } = await supabase
@@ -30,6 +30,8 @@ export async function createGalleryItemAction(data: GalleryFormInput): Promise<A
         tent_type,
         image_url,
         instagram_url: instagram_url || null,
+        media_type: media_type || 'IMAGE',
+        video_url: video_url || null,
         is_featured: is_featured ?? false,
       })
       .select('id')
@@ -60,10 +62,10 @@ export async function deleteGalleryItemAction(id: string): Promise<ActionRespons
 
     const { supabase } = await requireAdmin();
 
-    // 1. Ambil info gambar
+    // 1. Ambil info gambar dan video
     const { data: item } = await supabase
       .from('gallery_items')
-      .select('image_url')
+      .select('image_url, video_url')
       .eq('id', id)
       .single();
 
@@ -74,13 +76,20 @@ export async function deleteGalleryItemAction(id: string): Promise<ActionRespons
       return { success: false, error: `Gagal menghapus item galeri: ${deleteError.message}` };
     }
 
-    // 3. Bersihkan foto di Supabase Storage jika berasal dari bucket arum-media
-    if (item?.image_url && item.image_url.includes('/arum-media/')) {
-      const match = item.image_url.match(/\/arum-media\/(.+)$/);
-      if (match && match[1]) {
-        await supabase.storage.from('arum-media').remove([match[1]]);
+    // 3. Bersihkan aset media di Supabase Storage jika berasal dari bucket yang dikelola
+    const cleanStorageFile = async (url?: string | null) => {
+      if (!url) return;
+      if (url.includes('/gallery/')) {
+        const match = url.match(/\/gallery\/(.+)$/);
+        if (match && match[1]) await supabase.storage.from('gallery').remove([match[1]]);
+      } else if (url.includes('/arum-media/')) {
+        const match = url.match(/\/arum-media\/(.+)$/);
+        if (match && match[1]) await supabase.storage.from('arum-media').remove([match[1]]);
       }
-    }
+    };
+
+    if (item?.image_url) await cleanStorageFile(item.image_url);
+    if (item?.video_url) await cleanStorageFile(item.video_url);
 
     // On-demand cache invalidation
     revalidatePath('/galeri');

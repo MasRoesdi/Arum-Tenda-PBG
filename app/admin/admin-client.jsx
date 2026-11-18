@@ -425,6 +425,8 @@ export default function AdminClient({
       tent_type: 'transparan',
       image_url: '',
       instagram_url: '',
+      media_type: 'IMAGE',
+      video_url: '',
       is_featured: false,
     });
     setGalleryModalOpen(true);
@@ -456,6 +458,8 @@ export default function AdminClient({
       tent_type: galleryForm.tent_type,
       image_url: galleryForm.image_url.trim(),
       instagram_url: galleryForm.instagram_url.trim() || null,
+      media_type: galleryForm.media_type || 'IMAGE',
+      video_url: galleryForm.video_url?.trim() || null,
       is_featured: galleryForm.is_featured,
     };
 
@@ -974,6 +978,11 @@ export default function AdminClient({
                           </td>
                           <td>
                             <strong style={{ fontSize: '13px' }}>{g.title}</strong>
+                            {g.media_type === 'VIDEO' && (
+                              <span className="admin-badge admin-badge-warning" style={{ fontSize: '10px', marginLeft: '6px' }}>
+                                🎥 Reels
+                              </span>
+                            )}
                           </td>
                           <td>
                             <span className="admin-badge admin-badge-neutral" style={{ textTransform: 'capitalize' }}>

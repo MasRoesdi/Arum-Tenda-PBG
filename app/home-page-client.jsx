@@ -119,7 +119,7 @@ export default function HomePageClient() {
         <section className="hero" id="home">
           <img
             className="hero-image"
-            src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2200&q=88"
+            src="/images/tents/aset_piramid_lux.png"
             alt="Suasana acara dan tenda pernikahan yang tertata elegan"
             fetchPriority="high"
           />
@@ -210,7 +210,7 @@ export default function HomePageClient() {
           </div>
 
           <p className="catalog-footnote">* Estimasi paket rekomendasi. Ukuran, tata letak, dan perlengkapan tambahan dapat disesuaikan saat konsultasi bersama tim kami.</p>
-          
+
           <div className="section-route-links">
             <span>LEBIH BANYAK PILIHAN</span>
             <Link href="/katalog">Buka Katalog Lengkap <b>↗</b></Link>

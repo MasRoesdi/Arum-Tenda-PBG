@@ -50,22 +50,22 @@ export default function TentangPage() {
               aria-label="Foto perjalanan Arum Tenda"
             >
               <img
-                src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=900&q=82"
+                src="/images/tents/aset_piramid_blukat.png"
                 alt="Suasana acara yang tertata"
                 loading="lazy"
               />
               <img
-                src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=700&q=82"
+                src="/images/tents/aset_piramid_wide.png"
                 alt="Detail perlengkapan jamuan"
                 loading="lazy"
               />
               <img
-                src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=700&q=82"
+                src="/images/tents/piramid.png"
                 alt="Dekorasi acara perayaan"
                 loading="lazy"
               />
               <img
-                src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=700&q=82"
+                src="/images/tents/aset_kerut.png"
                 alt="Persiapan meja untuk acara"
                 loading="lazy"
               />

@@ -101,6 +101,14 @@ export const GalleryFormSchema = z.object({
     .nullable()
     .optional()
     .or(z.literal('')),
+  media_type: z.enum(['IMAGE', 'VIDEO']).default('IMAGE').optional(),
+  video_url: z
+    .string()
+    .trim()
+    .url('Format URL video harus berupa tautan valid')
+    .nullable()
+    .optional()
+    .or(z.literal('')),
   is_featured: z.boolean().default(false),
 });
 

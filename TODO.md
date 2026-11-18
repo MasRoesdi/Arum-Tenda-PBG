@@ -2,7 +2,7 @@
 
 Diperiksa terhadap proposal IUM revisi (*Peningkatan Jangkauan Pasar Arum Tenda Purbalingga*), bagian solusi tiga pilar dan tahap Design/Develop. Yang sudah ada di sistem tidak dicantumkan di sini.
 
-## Reservasi WhatsApp - IMPORTANCE : LOW
+## Reservasi WhatsApp - IMPORTANCE : LOW (ABAIKAN BAGIAN INI)
 
 Kontak, katalog, dan beranda hanya membuka `wa.me` dengan nomor contoh `6281234567890` dan teks umum. Detail produk merangkum nama barang, spesifikasi, warna, jumlah, dan estimasi, tetapi bukan data survei.
 
@@ -16,11 +16,11 @@ Kontak, katalog, dan beranda hanya membuka `wa.me` dengan nomor contoh `62812345
 
 Menampilkan dokumentasi foto dan video Reels dari `@arumtendapbg` secara otomatis dengan penyimpanan permanen di Supabase Storage agar link CDN Instagram tidak kedaluwarsa.
 
-- [ ] **Skema Database & Penyimpanan Permanen (`sharp` + Supabase Storage):** Perbarui tabel `gallery_items` untuk menyimpan `media_type` (`IMAGE` | `VIDEO`) dan `video_url`. Pada `app/api/cron/sync-instagram/route.ts`, konversi thumbnail/foto ke format `.webp` (via `sharp`) dan simpan file `.mp4` video Reels ke Supabase Storage (`bucket: gallery`) agar tidak terkena *expired CDN URL*.
-- [ ] **Pemutar Video Reels di Galeri (`/galeri`):** Perbarui komponen kartu galeri dan lightbox modal agar mendukung pemutaran video Reels (`<video controls playsInline preload="metadata" poster={image_url}>` atau embed modal) lengkap dengan badge indikator ikon Play untuk item bertipe `VIDEO`.
-- [ ] **Jadwal Sinkronisasi Otomatis & Environment Setup:** Tambahkan konfigurasi `vercel.json` cron (`0 0 * * *` ke `/api/cron/sync-instagram`) serta dokumentasi setup `INSTAGRAM_ACCESS_TOKEN` (Long-Lived Token 60 hari) dan `CRON_SECRET`.
+- [x] **Skema Database & Penyimpanan Permanen (`sharp` + Supabase Storage):** Perbarui tabel `gallery_items` untuk menyimpan `media_type` (`IMAGE` | `VIDEO`) dan `video_url`. Pada `app/api/cron/sync-instagram/route.ts`, konversi thumbnail/foto ke format `.webp` (via `sharp`) dan simpan file `.mp4` video Reels ke Supabase Storage (`bucket: gallery`) agar tidak terkena *expired CDN URL*.
+- [x] **Pemutar Video Reels di Galeri (`/galeri`):** Perbarui komponen kartu galeri dan lightbox modal agar mendukung pemutaran video Reels (`<video controls playsInline preload="metadata" poster={image_url}>` atau embed modal) lengkap dengan badge indikator ikon Play untuk item bertipe `VIDEO`.
+- [x] **Jadwal Sinkronisasi Otomatis & Environment Setup:** Tambahkan konfigurasi `vercel.json` cron (`0 0 * * *` ke `/api/cron/sync-instagram`) serta dokumentasi setup `INSTAGRAM_ACCESS_TOKEN` (Long-Lived Token 60 hari) dan `CRON_SECRET`.
 
-## Katalog dan harga resmi mitra - IMPORTANCE : MEDIUM
+## Katalog dan harga resmi mitra - IMPORTANCE : MEDIUM (ABAIKAN BAGIAN INI)
 
 Pricelist memakai harga seed/contoh (misalnya Tenda Roder Rp 85.000/m²) plus baris tambahan yang dikode di klien. Foto produk tenda masih Unsplash. Galeri barang inventaris sudah ada, tetapi tidak membawa harga.
 
