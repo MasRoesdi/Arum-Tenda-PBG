@@ -3,7 +3,7 @@
 import { memo, useEffect, useRef, useState, useMemo } from 'react';
 import { gsap } from 'gsap';
 import { Flip } from 'gsap/Flip';
-import { Play } from 'lucide-react';
+import { Play, Sparkles } from 'lucide-react';
 import SubpageHeader from '../components/subpage-header';
 import SubpageFooter from '../components/subpage-footer';
 
@@ -37,27 +37,6 @@ function getGalleryDescription(item) {
 
   return dateStr ? `${baseText} — ${dateStr}` : baseText;
 }
-const defaultGalleryItems = [
-  ['Pesta di ruang yang hangat', 'Transparan', 'photo-1519167758481-83f550bb49b3'],
-  ['Detail dekorasi untuk jamuan', 'Kerut', 'photo-1464366400600-7168b8af9bc3'],
-  ['Perayaan bersama keluarga', 'Blukat', 'photo-1511795409834-ef04bbd61622'],
-  ['Ruang terbuka untuk berkumpul', 'Piramid', 'photo-1507504031003-b417219a0fde'],
-  ['Tata meja untuk hari istimewa', 'Transparan', 'photo-1493857671505-72967e2e2760'],
-  ['Warna dan detail perayaan', 'Kerut', 'photo-1492684223066-81342ee5ff30'],
-  ['Suasana resepsi malam', 'Blukat', 'photo-1519225421980-715cb0215aed'],
-  ['Ruang acara yang tertata', 'Piramid', 'photo-1507504031003-b417219a0fde'],
-  ['Jamuan untuk para tamu', 'Transparan', 'photo-1513558161293-cdaf765edfd7'],
-  ['Dekorasi yang menyambut', 'Kerut', 'photo-1464366400600-7168b8af9bc3'],
-].map(([title, type, photo], index) => ({
-  title,
-  type,
-  image: `https://images.unsplash.com/${photo}?auto=format&fit=crop&w=1100&q=84`,
-  mediaType: 'IMAGE',
-  videoUrl: null,
-  postUrl: instagramUrl,
-  index,
-  id: `fallback-${index}`,
-}));
 
 const InteractiveGallery = memo(function InteractiveGallery({ galleryItems }) {
   const gridRef = useRef(null);
@@ -290,7 +269,7 @@ export default function GalleryClient({ initialItems }) {
           createdAt: item.created_at,
           index,
         }))
-      : defaultGalleryItems;
+      : [];
   }, [initialItems]);
 
   const filteredItems = useMemo(() => {
@@ -314,6 +293,8 @@ export default function GalleryClient({ initialItems }) {
   };
 
   const remainingCount = filteredItems.length - displayedItems.length;
+  const isCompletelyEmpty = allItems.length === 0;
+  const isFilterEmpty = !isCompletelyEmpty && displayedItems.length === 0;
 
   return (
     <div className="subpage">
@@ -324,37 +305,80 @@ export default function GalleryClient({ initialItems }) {
             <p className="eyebrow">INSPIRASI ACARA ARUM TENDA</p>
             <h1>Galeri Tenda</h1>
           </div>
-          <label className="gallery-filter-label" htmlFor="gallery-filter">
-            <span>JENIS TENDA</span>
-            <select
-              id="gallery-filter"
-              value={selectedType}
-              onChange={handleFilterChange}
-            >
-              <option value="all">Semua jenis ({allItems.length})</option>
-              <option value="transparan">Transparan</option>
-              <option value="kerut">Kerut</option>
-              <option value="blukat">Blukat</option>
-              <option value="piramid">Piramid</option>
-            </select>
-          </label>
+          {!isCompletelyEmpty && (
+            <label className="gallery-filter-label" htmlFor="gallery-filter">
+              <span>JENIS TENDA</span>
+              <select
+                id="gallery-filter"
+                value={selectedType}
+                onChange={handleFilterChange}
+              >
+                <option value="all">Semua jenis ({allItems.length})</option>
+                <option value="transparan">Transparan</option>
+                <option value="kerut">Kerut</option>
+                <option value="blukat">Blukat</option>
+                <option value="piramid">Piramid</option>
+              </select>
+            </label>
+          )}
         </div>
         <p className="gallery-page-note">
           Kumpulan suasana dan inspirasi pemasangan tenda asli dari Instagram @arumtendapbg untuk membantu Anda membayangkan acara yang ingin disiapkan.
         </p>
 
-        <InteractiveGallery galleryItems={displayedItems} />
-
-        {remainingCount > 0 && (
-          <div className="gallery-load-more-container">
+        {isCompletelyEmpty ? (
+          <div className="empty-state-notice">
+            <div className="empty-state-icon" aria-hidden="true">
+              <Sparkles size={26} strokeWidth={1.5} />
+            </div>
+            <p className="eyebrow">DOKUMENTASI PORTFOLIO</p>
+            <h2 className="empty-state-title">Nantikan informasi lebih lanjut!</h2>
+            <p className="empty-state-desc">
+              Dokumentasi portofolio acara dan inspirasi pemasangan tenda terbaru sedang dipersiapkan. Hubungi kami via WhatsApp untuk konsultasi dan inspirasi langsung.
+            </p>
+            <a
+              className="button button-dark"
+              href="https://wa.me/6281234567890?text=Halo%20Arum%20Tenda%2C%20saya%20ingin%20konsultasi%20mengenai%20foto%20dan%20inspirasi%20tenda."
+              target="_blank"
+              rel="noreferrer"
+            >
+              Konsultasi Acara via WhatsApp <span>↗</span>
+            </a>
+          </div>
+        ) : isFilterEmpty ? (
+          <div className="empty-state-notice">
+            <div className="empty-state-icon" aria-hidden="true">
+              <Sparkles size={26} strokeWidth={1.5} />
+            </div>
+            <p className="eyebrow">DOKUMENTASI JENIS TENDA</p>
+            <h2 className="empty-state-title">Nantikan informasi lebih lanjut!</h2>
+            <p className="empty-state-desc">
+              Belum ada foto dokumentasi untuk jenis tenda ini. Dokumentasi baru akan segera kami tambahkan.
+            </p>
             <button
               type="button"
-              className="button button-dark gallery-load-more-button"
-              onClick={handleLoadMore}
+              className="button button-dark"
+              onClick={() => setSelectedType('all')}
             >
-              Muat Lebih Banyak Foto ({remainingCount} lagi) <span>↓</span>
+              Lihat Semua Foto ({allItems.length}) <span>↺</span>
             </button>
           </div>
+        ) : (
+          <>
+            <InteractiveGallery galleryItems={displayedItems} />
+
+            {remainingCount > 0 && (
+              <div className="gallery-load-more-container">
+                <button
+                  type="button"
+                  className="button button-dark gallery-load-more-button"
+                  onClick={handleLoadMore}
+                >
+                  Muat Lebih Banyak Foto ({remainingCount} lagi) <span>↓</span>
+                </button>
+              </div>
+            )}
+          </>
         )}
       </main>
       <SubpageFooter activePage="/galeri" />

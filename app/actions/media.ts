@@ -1,5 +1,6 @@
 'use server';
 
+import sharp from 'sharp';
 import { requireAdmin } from '@/utils/supabase/authorization';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
@@ -13,6 +14,7 @@ export interface UploadResult {
 
 /**
  * Server Action: Mengunggah gambar produk atau galeri ke bucket Supabase Storage 'arum-media'
+ * Gambar otomatis dikonversi ke format WebP teroptimasi menggunakan sharp.
  */
 export async function uploadProductImage(formData: FormData): Promise<UploadResult> {
   try {
@@ -35,18 +37,22 @@ export async function uploadProductImage(formData: FormData): Promise<UploadResu
 
     const { supabase } = await requireAdmin();
 
-    // Tentukan ekstensi
-    const extension = file.type === 'image/webp' ? 'webp' : file.type === 'image/png' ? 'png' : 'jpg';
-    const fileName = `${crypto.randomUUID()}.${extension}`;
-    const filePath = `products/${fileName}`;
-
     const arrayBuffer = await file.arrayBuffer();
-    const buffer = new Uint8Array(arrayBuffer);
+    const inputBuffer = Buffer.from(arrayBuffer);
+
+    // Konversi gambar ke WebP teroptimasi menggunakan sharp
+    const webpBuffer = await sharp(inputBuffer)
+      .rotate()
+      .webp({ quality: 80, effort: 4 })
+      .toBuffer();
+
+    const fileName = `${crypto.randomUUID()}.webp`;
+    const filePath = `products/${fileName}`;
 
     const { error: uploadError } = await supabase.storage
       .from('arum-media')
-      .upload(filePath, buffer, {
-        contentType: file.type,
+      .upload(filePath, webpBuffer, {
+        contentType: 'image/webp',
         upsert: false,
       });
 

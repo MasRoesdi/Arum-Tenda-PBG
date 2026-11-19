@@ -19,7 +19,7 @@ const featuredPackages = [
     number: '01 · PAKET',
     category: 'TENDA & DEKORASI INTIM',
     name: 'Paket Akad & Lamaran',
-    description: 'Set tenda intim dengan kain serut elegan, karpet, kursi tiffany, dan tata lampu hangat untuk momen sakral.',
+    description: 'Set tenda intim dengan kain kerut elegan, karpet, kursi tiffany, dan tata lampu hangat untuk momen sakral.',
     price: '1.850.000',
     unit: 'mulai / hari',
     image: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=82',
@@ -37,8 +37,8 @@ const featuredPackages = [
   },
   {
     number: '03 · PAKET',
-    category: 'TENDA TRANSPARAN / VIP',
-    name: 'Paket VIP & Event Spesial',
+    category: 'TENDA TRANSPARAN',
+    name: 'Paket Spesial',
     description: 'Kombinasi tenda transparan modern, AC standing, tata pencahayaan mewah, dan flooring kayu vinyl.',
     price: '6.200.000',
     unit: 'mulai / hari',
@@ -268,16 +268,15 @@ export default function HomePageClient() {
               <p className="eyebrow">04 — SIMULATOR INTERAKTIF</p>
               <h2>Simulasikan Jenis &amp;<br /><em>Warna Tenda.</em></h2>
               <p className="home-simulator-desc">
-                Eksplorasi ragam pilihan kanopi—mulai dari tenda transparan, plafon serut, blukat, hingga paduan warna kain impian Anda secara real-time sebelum memesan.
+                Eksplorasi ragam pilihan kanopi—mulai dari tenda transparan, plafon kerut, blukat, hingga paduan warna kain impian Anda secara real-time sebelum memesan.
               </p>
               <div className="simulator-feature-tags">
-                <span className="simulator-tag">✦ Kanopi Transparan</span>
-                <span className="simulator-tag">✦ Plafon Serut</span>
-                <span className="simulator-tag">✦ Drapery VIP</span>
-                <span className="simulator-tag">✦ Ambient Lighting</span>
+                <span className="simulator-tag">✦ Kombinasi Navy-Silver</span>
+                <span className="simulator-tag">✦ Tenda Model Kerut</span>
+                <span className="simulator-tag">✦ Kendali warna kustom</span>
               </div>
               <div className="simulator-swatches-preview">
-                <span className="simulator-swatches-label">Pilihan Palet:</span>
+                <span className="simulator-swatches-label">Visualisasi warna anda!</span>
                 <div className="simulator-swatch-dots">
                   <span className="mini-swatch" style={{ background: '#f5f0e6' }} title="Broken White / Ivory" />
                   <span className="mini-swatch" style={{ background: '#1748e8' }} title="Arum Blue" />
@@ -293,18 +292,18 @@ export default function HomePageClient() {
 
             <div className="home-simulator-preview-card">
               <img
-                src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=82"
+                src="/images/tents/kerut.png"
                 alt="Simulasi kanopi dan dekorasi pencahayaan tenda pesta"
                 loading="lazy"
               />
-              <span className="simulator-preview-badge">PREVIEW INTERAKTIF · 3D CANOPY</span>
+              <span className="simulator-preview-badge">PREVIEW INTERAKTIF</span>
               <div className="simulator-preview-caption">
                 <div>
-                  <h4>Tenda Plafon Serut &amp; Warm Light</h4>
-                  <p>Kombinasi kain ivory &amp; tata lampu gantung temaram</p>
+                  <h4>Tenda Kerut &amp; Dekorasi Lampu</h4>
+                  <p>Kombinasi warna kain cream dan cokelat</p>
                 </div>
                 <Link className="caption-action" href="/simulasi">
-                  Kustomisasi ↗
+                  Coba Kustomisasi ↗
                 </Link>
               </div>
             </div>

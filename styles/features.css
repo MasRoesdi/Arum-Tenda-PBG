@@ -124,9 +124,12 @@
   object-fit: cover;
   display: block;
   transition: transform 0.6s ease;
+  object-position: left top;
+  transform: scale(1.1);
+  filter: brightness(120%);
 }
 .home-simulator-preview-card:hover img {
-  transform: scale(1.03);
+  transform: scale(1.13);
 }
 .simulator-preview-badge {
   position: absolute;
@@ -1068,3 +1071,67 @@
 .sim-cta-button:hover {
   background: #1239bd;
 }
+
+/* ===================================================
+   EMPTY STATE NOTICE (GALLERY & CATALOG)
+   =================================================== */
+.empty-state-notice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #f7f8fc;
+  border: 1px dashed var(--line, #dedad0);
+  border-radius: 14px;
+  padding: 56px 24px;
+  margin: 20px 0 32px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.empty-state-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(23, 72, 232, 0.08);
+  color: var(--green, #1748e8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.empty-state-notice .eyebrow {
+  margin: 0 0 8px;
+  color: var(--gold, #f28a3a);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.empty-state-title {
+  font-family: var(--serif), Georgia, serif;
+  font-size: clamp(20px, 2.5vw, 26px);
+  font-weight: 500;
+  color: var(--ink, #1f2720);
+  margin: 0 0 10px;
+  letter-spacing: -0.02em;
+}
+
+.empty-state-desc {
+  font-family: var(--sans), sans-serif;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--muted, #6f756e);
+  max-width: 440px;
+  margin: 0 0 18px;
+}
+
+@media (max-width: 700px) {
+  .empty-state-notice {
+    padding: 40px 18px;
+  }
+}
+

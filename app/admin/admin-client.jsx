@@ -1049,7 +1049,7 @@ export default function AdminClient({
                   <p className="admin-dropzone-text">
                     {uploadingMedia ? 'Mengunggah ke Supabase Storage...' : 'Klik untuk memilih file foto'}
                   </p>
-                  <p className="admin-dropzone-sub">Maksimal 5MB per file • Format WebP, PNG, JPEG</p>
+                  <p className="admin-dropzone-sub">Maksimal 5MB per file • Format WebP, PNG, JPEG (otomatis dikonversi ke WebP)</p>
                   <input
                     id="media-upload-input"
                     type="file"

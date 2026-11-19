@@ -181,7 +181,7 @@ export default function SimulatorClient() {
                 <div>
                   <h2 className="sim-card-title">2. Kombinasi Warna Siap Pakai</h2>
                   <p className="sim-card-subtitle">
-                    Preset 2-warna rekomendasi wedding &amp; hajatan Arum Tenda
+                    Preset 2-warna untuk peninjauan cepat
                   </p>
                 </div>
                 <Palette size={18} className="text-gray-400" />
