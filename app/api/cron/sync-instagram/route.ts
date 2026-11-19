@@ -166,19 +166,21 @@ async function handleSync(request: NextRequest) {
     }
 
     const accessToken = process.env.INSTAGRAM_ACCESS_TOKEN;
-    if (!accessToken) {
+    const igAccountId = process.env.INSTAGRAM_ACCOUNT_ID;
+
+    if (!accessToken || !igAccountId) {
       return NextResponse.json(
         {
           success: false,
           message:
-            'INSTAGRAM_ACCESS_TOKEN belum dikonfigurasi di environment. Sinkronisasi dilewati.',
+            'INSTAGRAM_ACCESS_TOKEN atau INSTAGRAM_ACCOUNT_ID belum dikonfigurasi di environment. Sinkronisasi dilewati.',
         },
         { status: 200 }
       );
     }
 
-    // 2. Ambil media terbaru dari Meta Graph API (limit 25)
-    const metaApiUrl = `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp&limit=25&access_token=${accessToken}`;
+    // 2. Ambil media terbaru dari Meta Graph API menggunakan host graph.facebook.com & Account ID
+    const metaApiUrl = `https://graph.facebook.com/v21.0/${igAccountId}/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp&limit=25&access_token=${accessToken}`;
     const response = await fetch(metaApiUrl, { cache: 'no-store' });
 
     if (!response.ok) {
