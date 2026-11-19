@@ -12,14 +12,6 @@ Kontak, katalog, dan beranda hanya membuka `wa.me` dengan nomor contoh `62812345
 - [ ] Ganti nomor contoh `6281234567890` di seluruh situs (beranda, katalog, kontak, header, JSON-LD)
 - [ ] Integrasi formulir ke WhatsApp Gateway API, sesuai tahap Develop proposal (saat ini hanya tautan `wa.me`)
 
-## Etalase Instagram (`/galeri` & `app/api/cron/sync-instagram`) - IMPORTANCE : HIGH
-
-Menampilkan dokumentasi foto dan video Reels dari `@arumtendapbg` secara otomatis dengan penyimpanan permanen di Supabase Storage agar link CDN Instagram tidak kedaluwarsa.
-
-- [x] **Skema Database & Penyimpanan Permanen (`sharp` + Supabase Storage):** Perbarui tabel `gallery_items` untuk menyimpan `media_type` (`IMAGE` | `VIDEO`) dan `video_url`. Pada `app/api/cron/sync-instagram/route.ts`, konversi thumbnail/foto ke format `.webp` (via `sharp`) dan simpan file `.mp4` video Reels ke Supabase Storage (`bucket: gallery`) agar tidak terkena *expired CDN URL*.
-- [x] **Pemutar Video Reels di Galeri (`/galeri`):** Perbarui komponen kartu galeri dan lightbox modal agar mendukung pemutaran video Reels (`<video controls playsInline preload="metadata" poster={image_url}>` atau embed modal) lengkap dengan badge indikator ikon Play untuk item bertipe `VIDEO`.
-- [x] **Jadwal Sinkronisasi Otomatis & Environment Setup:** Tambahkan konfigurasi `vercel.json` cron (`0 0 * * *` ke `/api/cron/sync-instagram`) serta dokumentasi setup `INSTAGRAM_ACCESS_TOKEN` (Long-Lived Token 60 hari) dan `CRON_SECRET`.
-
 ## Katalog dan harga resmi mitra - IMPORTANCE : MEDIUM (ABAIKAN BAGIAN INI)
 
 Pricelist memakai harga seed/contoh (misalnya Tenda Roder Rp 85.000/m²) plus baris tambahan yang dikode di klien. Foto produk tenda masih Unsplash. Galeri barang inventaris sudah ada, tetapi tidak membawa harga.

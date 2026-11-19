@@ -1,21 +1,19 @@
 'use client';
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Eye, RotateCcw, Download, Sparkles, Sun, Moon } from 'lucide-react';
-import { TentTemplateConfig, LayerState, LightingMode } from '@/types/simulator';
+import { Eye, RotateCcw, Download, Sparkles } from 'lucide-react';
+import { TentTemplateConfig, LayerState } from '@/types/simulator';
 import { applyFabricRecolor, ActiveLayerRenderData } from '@/utils/colorMath';
 
 interface TentCanvasPreviewProps {
   template: TentTemplateConfig;
   layerStates: Record<string, LayerState>;
-  lightingMode: LightingMode;
   onReset?: () => void;
 }
 
 export default function TentCanvasPreview({
   template,
   layerStates,
-  lightingMode,
   onReset,
 }: TentCanvasPreviewProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -160,92 +158,7 @@ export default function TentCanvasPreview({
     // Apply HSL Luminance preservation
     const recolored = applyFabricRecolor(cachedBaseImageData.current, activeLayers);
     ctx.putImageData(recolored, 0, 0);
-
-    // Day vs Night Mode Lighting
-    if (lightingMode === 'night') {
-      // Atmospheric dusk multiply tint
-      ctx.save();
-      ctx.globalCompositeOperation = 'multiply';
-      ctx.fillStyle = 'rgba(25, 30, 48, 0.48)';
-      ctx.fillRect(0, 0, w, h);
-      ctx.restore();
-
-      // Soft vignette for realistic outdoor/indoor night ambiance
-      ctx.save();
-      const vignette = ctx.createRadialGradient(
-        w / 2,
-        h / 2,
-        Math.min(w, h) * 0.35,
-        w / 2,
-        h / 2,
-        Math.max(w, h) * 0.75
-      );
-      vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
-      vignette.addColorStop(1, 'rgba(10, 15, 25, 0.45)');
-      ctx.fillStyle = vignette;
-      ctx.fillRect(0, 0, w, h);
-      ctx.restore();
-
-      // Render Chandelier and Fairy Light warm glow points
-      if (template.lightPoints && template.lightPoints.length > 0) {
-        for (const lp of template.lightPoints) {
-          const cx = lp.x * w;
-          const cy = lp.y * h;
-          const baseR = lp.radius * Math.min(w, h);
-
-          if (lp.type === 'chandelier') {
-            ctx.save();
-            ctx.globalCompositeOperation = 'screen';
-
-            // Outer soft warm ambiance
-            const outerGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, baseR * 2.2);
-            outerGrad.addColorStop(0, 'rgba(255, 220, 140, 0.55)');
-            outerGrad.addColorStop(0.35, 'rgba(255, 180, 80, 0.3)');
-            outerGrad.addColorStop(0.7, 'rgba(255, 140, 40, 0.1)');
-            outerGrad.addColorStop(1, 'rgba(255, 120, 30, 0)');
-            ctx.fillStyle = outerGrad;
-            ctx.beginPath();
-            ctx.arc(cx, cy, baseR * 2.2, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Intense glowing core
-            const innerGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, baseR * 0.75);
-            innerGrad.addColorStop(0, '#FFFFFF');
-            innerGrad.addColorStop(0.25, 'rgba(255, 245, 210, 0.95)');
-            innerGrad.addColorStop(0.6, 'rgba(255, 210, 110, 0.7)');
-            innerGrad.addColorStop(1, 'rgba(255, 180, 70, 0)');
-            ctx.fillStyle = innerGrad;
-            ctx.beginPath();
-            ctx.arc(cx, cy, baseR * 0.75, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Chandelier crystal spark
-            ctx.fillStyle = '#FFFFFF';
-            ctx.beginPath();
-            ctx.arc(cx, cy, Math.max(2, baseR * 0.09), 0, Math.PI * 2);
-            ctx.fill();
-
-            ctx.restore();
-          } else if (lp.type === 'fairylight') {
-            ctx.save();
-            ctx.globalCompositeOperation = 'screen';
-
-            const fairyGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, baseR * 1.8);
-            fairyGrad.addColorStop(0, '#FFFFFF');
-            fairyGrad.addColorStop(0.3, 'rgba(255, 235, 180, 0.85)');
-            fairyGrad.addColorStop(0.65, 'rgba(255, 195, 100, 0.35)');
-            fairyGrad.addColorStop(1, 'rgba(255, 160, 60, 0)');
-            ctx.fillStyle = fairyGrad;
-            ctx.beginPath();
-            ctx.arc(cx, cy, baseR * 1.8, 0, Math.PI * 2);
-            ctx.fill();
-
-            ctx.restore();
-          }
-        }
-      }
-    }
-  }, [template, layerStates, lightingMode, isOriginalShown]);
+  }, [template, layerStates, isOriginalShown]);
 
   // Re-draw whenever relevant state changes
   useEffect(() => {
@@ -261,7 +174,7 @@ export default function TentCanvasPreview({
     try {
       const dataUrl = canvas.toDataURL('image/png');
       const a = document.createElement('a');
-      a.download = `simulasi-arum-tenda-${template.id}-${lightingMode}-${Date.now()}.png`;
+      a.download = `simulasi-arum-tenda-${template.id}-${Date.now()}.png`;
       a.href = dataUrl;
       a.click();
     } catch (err) {
@@ -287,28 +200,14 @@ export default function TentCanvasPreview({
         />
 
         {/* Status badges */}
-        <div className="simulator-badge-overlay">
-          <span className="simulator-badge mode-badge">
-            {lightingMode === 'day' ? (
-              <>
-                <Sun size={12} className="text-amber-500" />
-                <span>Siang (Natural)</span>
-              </>
-            ) : (
-              <>
-                <Moon size={12} className="text-indigo-400" />
-                <span>Malam (Warm Glow)</span>
-              </>
-            )}
-          </span>
-
-          {isOriginalShown && (
+        {isOriginalShown && (
+          <div className="simulator-badge-overlay">
             <span className="simulator-badge original-badge">
               <Eye size={12} />
               <span>Foto Asli</span>
             </span>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Action buttons below canvas */}
@@ -353,8 +252,7 @@ export default function TentCanvasPreview({
       </div>
 
       <p className="simulator-canvas-disclaimer">
-        * Pratinjau interaktif mempertahankan tekstur lipatan, bayangan kain asli (HSL Luminance),
-        serta pendar lampu kristal gantung dan fairy lights.
+        * Pratinjau interaktif mempertahankan tekstur lipatan dan bayangan kain asli (HSL Luminance).
       </p>
     </div>
   );

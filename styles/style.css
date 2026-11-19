@@ -48,7 +48,7 @@ textarea {
 .site-header {
     height: 78px;
     position: absolute;
-    z-index: 10;
+    z-index: 100;
     top: 0;
     left: 0;
     right: 0;
@@ -1234,7 +1234,7 @@ textarea {
     .mobile-nav {
         display: flex;
         position: fixed;
-        z-index: 9;
+        z-index: 99;
         inset: 0;
         background: var(--green);
         color: white;
@@ -3020,7 +3020,8 @@ textarea {
     backdrop-filter: none;
     box-shadow: none;
     border-bottom: 1px solid #ffffff24;
-    transition: none
+    transition: none;
+    z-index: 100;
 }
 
 .tent-simulator-page {

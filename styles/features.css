@@ -1,5 +1,5 @@
 [hidden]{display:none!important}.photo-placeholder{position:absolute;inset:0;display:grid;place-items:center;background:#d8d6ce;color:#777970;font-size:10px;letter-spacing:.12em}.empty-catalog{grid-column:1/-1;color:#71746b;font-size:12px;padding:30px 0}.admin-row span:nth-of-type(2){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.admin-row button:hover,.admin-add:hover{filter:brightness(.94)}.product-photo:focus-visible,.button:focus-visible,.text-link:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid #f05a3a;outline-offset:3px}
-.site-header{position:fixed;background:rgba(19,27,21,.28);-webkit-backdrop-filter:blur(11px);backdrop-filter:blur(11px);box-shadow:0 2px 18px rgba(0,0,0,.25);border-bottom:1px solid rgba(255,255,255,.28);transition:background-color .25s ease,box-shadow .25s ease,backdrop-filter .25s ease}.site-header.is-scrolled{background:rgba(35,55,41,.95);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 3px 18px rgba(0,0,0,.2)}.main-nav{font-size:13px;gap:34px}.main-nav a,.header-cta,.social-menu summary{ text-shadow:0 1px 4px rgba(0,0,0,.42)}.header-cta,.social-menu{font-size:12px}.brand small{font-size:8px}
+.site-header{position:fixed;z-index:100;background:rgba(19,27,21,.28);-webkit-backdrop-filter:blur(11px);backdrop-filter:blur(11px);box-shadow:0 2px 18px rgba(0,0,0,.25);border-bottom:1px solid rgba(255,255,255,.28);transition:background-color .25s ease,box-shadow .25s ease,backdrop-filter .25s ease}.site-header.is-scrolled{background:rgba(35,55,41,.95);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 3px 18px rgba(0,0,0,.2)}.main-nav{font-size:13px;gap:34px}.main-nav a,.header-cta,.social-menu summary{ text-shadow:0 1px 4px rgba(0,0,0,.42)}.header-cta,.social-menu{font-size:12px}.brand small{font-size:8px}
 @media(max-width:700px){.site-header{position:fixed}.brand small{font-size:7px}}
 .section-route-links{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:18px}.section-route-links>span{font-size:8px;letter-spacing:.13em;color:#7d8077}.section-route-links>a{display:inline-flex;align-items:center;gap:24px;color:var(--green);font-size:10px;border-bottom:1px solid #a2a69b;padding:8px 0}.section-route-links b{font-size:15px;font-weight:400;transition:transform .2s}.section-route-links>a:hover b{transform:translateY(3px)}.mobile-quick-nav{display:none}
 @media(max-width:700px){.section-route-links{margin-top:35px;align-items:flex-start;flex-direction:column;gap:5px}.section-route-links>a{font-size:11px;padding:7px 0}.mobile-quick-nav{position:fixed;z-index:8;left:12px;right:12px;bottom:max(10px,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(4,1fr);padding:7px 5px calc(7px + env(safe-area-inset-bottom));border:1px solid #ffffffb8;background:rgba(248,247,242,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 8px 30px rgba(20,26,20,.2);opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .2s ease,transform .2s ease,visibility .2s ease}.mobile-quick-nav.is-visible{opacity:1;visibility:visible;transform:translateY(0)}.mobile-quick-nav a{min-width:0;display:grid;justify-items:center;gap:4px;color:#74776f;font-size:8px;padding:3px 0}.mobile-quick-nav .quick-icon{font:9px var(--sans);letter-spacing:.08em;color:#8b8e83}.mobile-quick-nav a.active{color:var(--green);font-weight:700}.mobile-quick-nav a.active .quick-icon{color:#f05a3a}.mobile-quick-nav a:focus-visible{outline-offset:-2px}.site-footer{padding-bottom:92px}}
@@ -620,6 +620,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  z-index: 2;
 }
 
 @media (max-width: 980px) {
@@ -646,6 +647,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  isolation: isolate;
+  z-index: 1;
 }
 
 .simulator-canvas {
@@ -667,7 +670,7 @@
   color: var(--ink);
   font-size: 13px;
   font-weight: 500;
-  z-index: 10;
+  z-index: 2;
 }
 
 .simulator-badge-overlay {
@@ -840,38 +843,6 @@
   font-size: 10px;
   color: #72756d;
   line-height: 1.4;
-}
-
-/* Lighting Mode Toggle */
-.sim-lighting-toggle-group {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  background: #f1f3f9;
-  padding: 6px;
-  border-radius: 10px;
-}
-
-.sim-lighting-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px;
-  border: none;
-  background: transparent;
-  border-radius: 7px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #62665d;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.sim-lighting-btn.is-active {
-  background: #ffffff;
-  color: var(--ink);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 /* Preset 2-Warna Buttons */

@@ -6,12 +6,11 @@ import SubpageHeader from '../components/subpage-header';
 import SubpageFooter from '../components/subpage-footer';
 import TentCanvasPreview from '@/components/simulator/TentCanvasPreview';
 import { TENT_TEMPLATES, COLOR_PRESETS } from '@/config/tentTemplates';
-import { Sun, Moon, Palette, Layers, Check, ArrowUpRight } from 'lucide-react';
+import { Palette, Layers, Check, ArrowUpRight } from 'lucide-react';
 
 export default function SimulatorClient() {
   const [selectedTentId, setSelectedTentId] = useState('kerut');
-  const [lightingMode, setLightingMode] = useState('day');
-  const [activePresetId, setActivePresetId] = useState(null);
+  const [activePresetId, setActivePresetId] = useState('navy-silver');
 
   // Current active tent template config
   const currentTemplate = useMemo(() => {
@@ -39,7 +38,7 @@ export default function SimulatorClient() {
   // Switch tent type and reset layer state to that template's defaults
   const handleTentTypeChange = (tentId) => {
     setSelectedTentId(tentId);
-    setActivePresetId(null);
+    setActivePresetId('navy-silver');
     const targetTemplate = TENT_TEMPLATES.find((t) => t.id === tentId) || TENT_TEMPLATES[0];
     setLayerStates(getInitialLayerStates(targetTemplate));
   };
@@ -107,7 +106,7 @@ export default function SimulatorClient() {
 
   // Reset to original template defaults
   const handleResetColors = () => {
-    setActivePresetId(null);
+    setActivePresetId('navy-silver');
     setLayerStates(getInitialLayerStates(currentTemplate));
   };
 
@@ -117,8 +116,8 @@ export default function SimulatorClient() {
       .filter((l) => layerStates[l.id]?.enabled)
       .map((l) => `${l.name} (${layerStates[l.id]?.color})`)
       .join(', ');
-    return `Halo Arum Tenda, saya telah merancang simulasi tenda tipe ${currentTemplate.name} dengan kombinasi: ${layerSummary}, mode pencahayaan ${lightingMode === 'day' ? 'Siang' : 'Malam'}. Mohon informasi survei lokasi & konsultasi.`;
-  }, [currentTemplate, layerStates, lightingMode]);
+    return `Halo Arum Tenda, saya telah merancang simulasi tenda tipe ${currentTemplate.name} dengan kombinasi: ${layerSummary}. Mohon informasi survei lokasi & konsultasi.`;
+  }, [currentTemplate, layerStates]);
 
   return (
     <div className="subpage">
@@ -131,7 +130,7 @@ export default function SimulatorClient() {
           <h1>Simulasi Tenda &amp; Warna</h1>
           <p>
             Rancang kombinasi warna kain serut dengan visualisasi realistik berbasis lipatan kain
-            asli dan tata pencahayaan Siang &amp; Malam.
+            asli.
           </p>
         </div>
 
@@ -142,7 +141,6 @@ export default function SimulatorClient() {
             <TentCanvasPreview
               template={currentTemplate}
               layerStates={layerStates}
-              lightingMode={lightingMode}
               onReset={handleResetColors}
             />
           </section>
@@ -177,44 +175,11 @@ export default function SimulatorClient() {
               </div>
             </div>
 
-            {/* 2. Suasana Pencahayaan (Siang & Malam) */}
+            {/* 2. Preset Kombinasi 2-Warna Siap Pakai */}
             <div className="sim-control-card">
               <div className="sim-card-header">
                 <div>
-                  <h2 className="sim-card-title">2. Suasana Pencahayaan</h2>
-                  <p className="sim-card-subtitle">
-                    Pratinjau visual di siang hari atau malam bertabur lampu kristal
-                  </p>
-                </div>
-              </div>
-
-              <div className="sim-lighting-toggle-group" role="group" aria-label="Mode pencahayaan">
-                <button
-                  type="button"
-                  className={`sim-lighting-btn ${lightingMode === 'day' ? 'is-active' : ''}`}
-                  onClick={() => setLightingMode('day')}
-                  aria-pressed={lightingMode === 'day'}
-                >
-                  <Sun size={16} />
-                  <span>Siang (Daylight)</span>
-                </button>
-                <button
-                  type="button"
-                  className={`sim-lighting-btn ${lightingMode === 'night' ? 'is-active' : ''}`}
-                  onClick={() => setLightingMode('night')}
-                  aria-pressed={lightingMode === 'night'}
-                >
-                  <Moon size={16} />
-                  <span>Malam (Warm Glow)</span>
-                </button>
-              </div>
-            </div>
-
-            {/* 3. Preset Kombinasi 2-Warna Siap Pakai */}
-            <div className="sim-control-card">
-              <div className="sim-card-header">
-                <div>
-                  <h2 className="sim-card-title">3. Kombinasi Warna Siap Pakai</h2>
+                  <h2 className="sim-card-title">2. Kombinasi Warna Siap Pakai</h2>
                   <p className="sim-card-subtitle">
                     Preset 2-warna rekomendasi wedding &amp; hajatan Arum Tenda
                   </p>
@@ -252,11 +217,11 @@ export default function SimulatorClient() {
               </div>
             </div>
 
-            {/* 4. Kustomisasi Komponen Layer Per Komponen */}
+            {/* 3. Kustomisasi Komponen Layer Per Komponen */}
             <div className="sim-control-card">
               <div className="sim-card-header">
                 <div>
-                  <h2 className="sim-card-title">4. Kustomisasi Detail Layer</h2>
+                  <h2 className="sim-card-title">3. Kustomisasi Detail Layer</h2>
                   <p className="sim-card-subtitle">
                     Atur warna custom dan kepekatan intensitas tiap bagian kain
                   </p>

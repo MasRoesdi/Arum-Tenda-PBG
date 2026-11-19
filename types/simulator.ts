@@ -27,7 +27,7 @@ export interface TentTemplateConfig {
     description: string;
     imageUrl: string;
     layers: LayerPolygonConfig[];
-    lightPoints: LightPointConfig[];
+    lightPoints?: LightPointConfig[];
 }
 
 export interface ColorPreset {
