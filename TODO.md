@@ -15,8 +15,6 @@ Kontak, katalog, dan beranda hanya membuka `wa.me` dengan nomor contoh `62812345
 - [ ] Ganti nomor contoh `6281234567890` di seluruh situs (beranda, katalog, kontak, header, JSON-LD)
 - [ ] Integrasi formulir ke WhatsApp Gateway API, sesuai tahap Develop proposal (saat ini hanya tautan `wa.me`)
 
-## Katalog dan harga resmi mitra (`/katalog`) - IMPORTANCE MEDIUM
-
 ## Cakupan wilayah (`/tentang`)
 
 - [ ] Ubah gambar map menjadi visualisasi daerah barlingmascakep

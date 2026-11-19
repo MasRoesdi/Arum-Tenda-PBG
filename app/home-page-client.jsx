@@ -15,35 +15,35 @@ const pages = [
 ];
 
 const featuredPackages = [
-  {
+{
     number: '01 · PAKET',
     category: 'TENDA & DEKORASI INTIM',
     name: 'Paket Akad & Lamaran',
-    description: 'Set tenda intim dengan kain kerut elegan, karpet, kursi tiffany, dan tata lampu hangat untuk momen sakral.',
+    description: 'Tenda ukuran pas dengan hiasan kain, karpet, kursi tamu, dan lampu gantung untuk acara keluarga di rumah.',
     price: '1.850.000',
     unit: 'mulai / hari',
-    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=82',
-    alt: 'Dekorasi tenda akad nikah dan lamaran intim',
+    image: '/images/tents/blukat.png',
+    alt: 'Tenda dekorasi sederhana dan rapi untuk acara akad atau lamaran di rumah',
   },
   {
     number: '02 · PAKET',
     category: 'TENDA PLAFON / DEKORASI',
     name: 'Paket Resepsi Rumah',
-    description: 'Solusi lengkap tenda plafon dekorasi, panggung pelaminan, meja prasmanan, dan kipas blower pendingin.',
+    description: 'Paket tenda plafon hias, panggung pelaminan, meja prasmanan, plus kipas angin embun biar tamu tetap adem.',
     price: '3.500.000',
     unit: 'mulai / hari',
-    image: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1000&q=82',
-    alt: 'Tenda resepsi pernikahan dekorasi rumah lengkap',
+    image: '/images/tents/aset_piramid.png',
+    alt: 'Tenda hajatan dan resepsi pernikahan lengkap di halaman rumah',
   },
   {
     number: '03 · PAKET',
     category: 'TENDA TRANSPARAN',
     name: 'Paket Spesial',
-    description: 'Kombinasi tenda transparan modern, AC standing, tata pencahayaan mewah, dan flooring kayu vinyl.',
+    description: 'Paket tenda lengkap dengan alas lantai papan rapi dan lampu-lampu cantik yang pas untuk acara malam.',
     price: '6.200.000',
     unit: 'mulai / hari',
-    image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1000&q=82',
-    alt: 'Tenda transparan mewah untuk pesta malam hari',
+    image: '/images/tents/aset_lux.png',
+    alt: 'Tenda atap transparan dengan hiasan lampu untuk acara pernikahan malam hari',
   },
 ];
 
@@ -231,15 +231,15 @@ export default function HomePageClient() {
           </div>
           <div className="gallery-grid">
             <Link className="gallery-tile tile-tall" href="/galeri">
-              <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1000&q=82" alt="Inspirasi dekorasi dan tata ruang acara" loading="lazy" />
+              <img src="/images/tents/aset_piramid_wide.png" alt="Inspirasi dekorasi dan tata ruang acara" loading="lazy" />
               <span className="gallery-caption">
                 <small>01 · DEKORASI</small>
-                <b>Ruang untuk berkumpul</b>
+                <b>Hiasan tenda bermotif</b>
               </span>
               <i>↗</i>
             </Link>
             <Link className="gallery-tile" href="/galeri">
-              <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1000&q=82" alt="Meja perjamuan untuk acara spesial" loading="lazy" />
+              <img src="/images/tents/piramid.png" alt="Meja perjamuan untuk acara spesial" loading="lazy" style={{filter: 'brightness(120%)'}}/>
               <span className="gallery-caption">
                 <small>02 · PERJAMUAN</small>
                 <b>Detail yang menyambut</b>
@@ -247,7 +247,7 @@ export default function HomePageClient() {
               <i>↗</i>
             </Link>
             <Link className="gallery-tile" href="/galeri">
-              <img src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1000&q=82" alt="Persiapan acara perayaan di luar ruang" loading="lazy" />
+              <img src="/images/tents/aset_mawar.png" alt="Persiapan acara perayaan di luar ruang" loading="lazy" style={{objectPosition: 'top center', filter: 'brightness(90%)'}} />
               <span className="gallery-caption">
                 <small>03 · PERAYAAN</small>
                 <b>Hari yang dinanti</b>

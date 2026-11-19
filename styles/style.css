@@ -705,7 +705,8 @@ textarea {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform .6s
+    transition: transform .6s;
+    object-position: bottom center;
 }
 
 .gallery-tile:hover img {
@@ -714,6 +715,10 @@ textarea {
 
 .tile-tall {
     grid-row: span 2
+}
+
+.tile-tall img {
+    object-position: top center;
 }
 
 .gallery-tile:after {

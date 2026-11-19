@@ -55,7 +55,7 @@ export const metadata = {
       'Solusi sewa tenda pernikahan, kanopi serut mewah, panggung, dan perlengkapan pesta terpercaya di Purbalingga',
     images: [
       {
-        url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&h=630&q=85',
+        url: '/images/tents/aset_piramid_lux.png',
         width: 1200,
         height: 630,
         alt: 'Arum Tenda — Sewa Tenda & Alat Pesta Purbalingga',
@@ -68,7 +68,7 @@ export const metadata = {
     description:
       'Sewa tenda pernikahan, tenda serut, dan perlengkapan pesta di Purbalingga',
     images: [
-      'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&h=630&q=85',
+      '/images/tents/aset_piramid_lux.png',
     ],
   },
   robots: {
@@ -104,6 +104,7 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
         />
+        <link rel="shortcut icon" href="/images/Arum Tenda.ico" type="image/x-icon" />
         <LocalBusinessJsonLd />
         <FaqJsonLd />
       </head>
