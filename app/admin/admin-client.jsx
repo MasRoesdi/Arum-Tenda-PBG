@@ -597,8 +597,8 @@ export default function AdminClient({
               {initialUser?.email ? initialUser.email.charAt(0).toUpperCase() : 'A'}
             </div>
             <div className="admin-user-details">
-              <span className="admin-user-email" title={initialUser?.email || 'admin@arumtenda.com'}>
-                {initialUser?.email || 'admin@arumtenda.com'}
+              <span className="admin-user-email" title={initialUser?.email || 'admin@arumtendapbg.com'}>
+                {initialUser?.email || 'admin@arumtendapbg.com'}
               </span>
               <span className="admin-user-role">Administrator</span>
             </div>

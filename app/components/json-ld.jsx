@@ -1,7 +1,7 @@
 import React from "react";
 
 const DEFAULT_BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://arumtenda.com";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://arumtendapbg.com";
 
 /**
  * LocalBusiness & PartyEquipmentRentalService Schema.org structured data

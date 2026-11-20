@@ -69,7 +69,7 @@ function LoginForm() {
             name="email"
             type="email"
             required
-            placeholder="admin@arumtenda.com"
+            placeholder="admin@arumtendapbg.com"
             style={{
               width: '100%',
               padding: '12px 14px',

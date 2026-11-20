@@ -5,7 +5,7 @@ import '../styles/user-theme.css';
 import SatinBackground from './components/satin-background';
 import { LocalBusinessJsonLd, FaqJsonLd } from './components/json-ld';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://arumtenda.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://arumtendapbg.com';
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
